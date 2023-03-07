@@ -40,12 +40,120 @@
         </tr>
       </tbody>
     </table>
+    <!-- Create -->
+    <div
+      class="modal fade"
+      id="exampleModalSubmit"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              {{ customer ? "Edição" : "Cadastro" }} de Cliente
+            </h5>
+            <button
+              id="closeModal"
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent="handleSubmit" style="text-align: left">
+              <div v-if="message" class="alert alert-danger" role="alert">
+                teste
+              </div>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" required />
+              </div>
+              <div class="form-group">
+                <label for="cpf">CPF</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  required
+                  id="cpf"
+                  min="12"
+                />
+              </div>
+              <div class="form-group">
+                <label for="birthday">Aniversario</label>
+                <input
+                  type="date"
+                  required
+                  class="form-control"
+                  id="birthday"
+                />
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" id="phone" />
+              </div>
+              <div class="form-group" style="text-align: right">
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  style="text-align: right"
+                >
+                  Criar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Delete -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Deletar Cliente cliente
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" v-if="customer">
+            Voce tem certesa que deseja deletar o cliente: cliente
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Fechar
+            </button>
+            <button type="button" data-dismiss="modal" class="btn btn-success">
+              Sim
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "App",
   components: {},
 };
 </script>
