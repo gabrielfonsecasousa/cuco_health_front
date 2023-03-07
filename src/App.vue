@@ -18,6 +18,18 @@
         <button class="btn btn-primary">Filtrar</button>
       </div>
     </div>
+    <div class="row">
+      <div class="col-12" style="text-align: left">
+        <button
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModalSubmit"
+          @click="showCustomer(null)"
+        >
+          Criar Cliente
+        </button>
+      </div>
+    </div>
     <table class="table mt-2">
       <thead>
         <tr>
@@ -130,41 +142,47 @@
         </div>
       </div>
     </div>
-    <!-- Delete -->
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              Deletar Cliente cliente
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body" v-if="customer">
-            Voce tem certesa que deseja deletar o cliente: cliente
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">
-              Fechar
-            </button>
-            <button type="button" data-dismiss="modal" class="btn btn-success">
-              Sim
-            </button>
-          </div>
+  </div>
+  <!-- Delete -->
+  <div
+    v-if="customer"
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Deletar Cliente {{ customer.name }}
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" v-if="customer">
+          Voce tem certesa que deseja deletar o cliente: {{ customer.name }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            Fechar
+          </button>
+          <button
+            type="button"
+            data-dismiss="modal"
+            @click="deleteCustomer(customer)"
+            class="btn btn-success"
+          >
+            Sim
+          </button>
         </div>
       </div>
     </div>
@@ -199,6 +217,29 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    deleteCustomer(customer) {
+      console.log(customer);
+      axios
+        .delete("http://127.0.0.1:8000/api/customers/" + customer.id)
+        .then(() => {
+          this.getCustomers();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    showCustomer(customer) {
+      console.log(customer != null);
+      var customerObject = {
+        id: customer != null ? customer.id : "",
+        cpf: customer != null ? customer.cpf : "",
+        name: customer != null ? customer.name : "",
+        birthday:
+          customer != null ? this.dateFormatInput(customer.birthday) : "",
+        phone: customer != null ? customer.phone : "",
+      };
+      this.customer = customerObject;
     },
     dateFormat(date) {
       let dateString = date;
