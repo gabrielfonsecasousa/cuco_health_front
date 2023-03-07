@@ -29,17 +29,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>test</td>
-          <td>teste</td>
-          <td>test</td>
-          <td>test</td>
+        <tr v-for="(customer, index) in customers" :key="index">
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.cpf }}</td>
+          <td>{{ this.dateFormat(customer.birthday) }}</td>
+          <td>{{ customer.phone }}</td>
           <td>
             <div class="btn-group mr-2">
               <button
                 class="btn btn-success"
                 data-toggle="modal"
                 data-target="#exampleModalSubmit"
+                @click="showCustomer(customer)"
               >
                 Editar
               </button>
@@ -49,6 +50,7 @@
                 class="btn btn-danger"
                 data-toggle="modal"
                 data-target="#exampleModal"
+                @click="showCustomer(customer)"
               >
                 Deletar
               </button>
@@ -170,7 +172,55 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  data() {
+    return {
+      customers: [],
+      customer: Object,
+      selectedCustomer: null,
+      message: "",
+      nameFilter: "",
+      cpfFilter: "",
+      showForm: false,
+      form: Object,
+    };
+  },
+  mounted() {
+    this.getCustomers();
+  },
+  methods: {
+    getCustomers() {
+      axios
+        .get("http://127.0.0.1:8000/api/customers")
+        .then((response) => {
+          this.customers = response.data["data"];
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    dateFormat(date) {
+      let dateString = date;
+      let dateObject = new Date(dateString);
+      let day = dateObject.getDate();
+      let month = dateObject.getMonth() + 1;
+      let year = dateObject.getFullYear();
+      let formattedDate = `${day.toString().padStart(2, "0")}/${month
+        .toString()
+        .padStart(2, "0")}/${year.toString()}`;
+      return formattedDate;
+    },
+    dateFormatInput(date) {
+      let dateString = date;
+      let dateObject = new Date(dateString);
+      let year = dateObject.getFullYear();
+      let month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+      let day = dateObject.getDate().toString().padStart(2, "0");
+      let formattedDate = `${year}-${month}-${day}`;
+      return formattedDate;
+    },
+  },
   components: {},
 };
 </script>
