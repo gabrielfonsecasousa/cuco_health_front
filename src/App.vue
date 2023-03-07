@@ -1,6 +1,23 @@
 <template>
   <div class="container">
     <h1>Lista de Clientes</h1>
+    <div class="row">
+      <div class="col-3 form-group mr-3">
+        <input type="text" class="form-control" placeholder="Nome" />
+      </div>
+      <div class="col-3 form-group mr-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="CPF"
+          v-mask="'##.###.###/####-##'"
+        />
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-primary">Filtrar</button>
+      </div>
+    </div>
     <table class="table mt-2">
       <thead>
         <tr>
